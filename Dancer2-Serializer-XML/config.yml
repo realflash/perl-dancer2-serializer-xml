@@ -1,0 +1,19 @@
+appname: "Attono::Website"
+layout: "main"
+charset: "UTF-8"
+template: "template_toolkit"
+engines:
+  template:
+    template_toolkit:
+      start_tag: '[%'
+      end_tag:   '%]'
+      EVAL_PERL: 1
+  serializer:
+    serialize:
+      AttrIndent: 1
+      KeyAttr: []
+    deserialize:
+      ForceArray: 1
+      KeyAttr: []
+      ForceContent: 1
+      KeepRoot: 1        

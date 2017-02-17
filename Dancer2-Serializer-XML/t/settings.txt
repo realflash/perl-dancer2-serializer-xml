@@ -1,0 +1,64 @@
+use strict;
+use warnings;
+use Dancer2;
+use Test::More tests => 2;
+use Plack::Test;
+use HTTP::Request::Common;
+use Dancer2::Logger::Capture;
+
+my $logger = Dancer2::Logger::Capture->new;
+isa_ok( $logger, 'Dancer2::Logger::Capture' );
+
+{
+    package App;
+    use Dancer2;
+
+    # default, we're actually overriding this later
+    set serializer => 'XML';
+
+    # for now
+    set logger     => 'Console';
+
+    put '/from_params' => sub {
+        my %p = params();
+        return [ map +( $_ => $p{$_} ), sort keys %p ];
+    };
+
+    put '/from_data' => sub {
+        my $p = request->data;
+        return [ map +( $_ => $p->{$_} ), sort keys %{$p} ];
+    };
+
+    # This route is used for both toure and body params.
+    post '/from/:town' => sub {
+        my $p = params;
+        return [ map +( $_ => $p->{$_} ), sort keys %{$p} ];
+    };
+
+    any [qw/del patch/] => '/from/:town' => sub {
+        my $p = params('body');
+        return [ map +( $_ => $p->{$_} ), sort keys %{$p} ];
+    };
+
+	set engines => {
+			  'serializer' => {
+								'deserialize' => {
+												   'ForceArray' => 1,
+												   'KeepRoot' => 1,
+												   'ForceContent' => 1,
+												   'KeyAttr' => []
+												 },
+								'serialize' => {
+												 'KeyAttr' => [],
+												 'AttrIndent' => 1
+											   }
+							  },
+			};
+}
+
+my $test = Plack::Test->create( App->to_app );
+my $app = App->to_app;
+
+my $s = $app->setting('engines');
+debug setting('engines');
+isnt($s, undef, "Loaded settings");

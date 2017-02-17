@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Dancer2-Serializer-XML.t
+lib/Dancer2/Serializer/XML.pm
