@@ -10,7 +10,7 @@ use Data::Dumper;
 use Class::Load 'load_class';
 with 'Dancer2::Core::Role::Serializer';
 
-our $VERSION = '0.01';
+our $VERSION = '0.03';
 
 has '+content_type' => ( default => sub {'application/xml'} );
 has 'xml_options' => 
