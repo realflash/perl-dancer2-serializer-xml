@@ -10,10 +10,10 @@ engines:
       EVAL_PERL: 1
   serializer:
     serialize:
-      AttrIndent: 1
       KeyAttr: []
+      RootName: 'test'
     deserialize:
       ForceArray: 1
       KeyAttr: []
       ForceContent: 1
-      KeepRoot: 1        
+      KeepRoot: 1      

@@ -27,12 +27,14 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=3
-FILE_NAME_0=36;None;0;EUTF-8;1;1;0;%2Fhome%2Figibbs%2FDropbox%2FWork%2FAttono%2Fdev%2Fperl-dancer2-serializer-xml%2FDancer2-Serializer-XML%2FMANIFEST;0;4
-FILE_NAME_1=762;Perl;0;EUTF-8;1;1;0;%2Fhome%2Figibbs%2FDropbox%2FWork%2FAttono%2Fdev%2Fperl-dancer2-serializer-xml%2FDancer2-Serializer-XML%2Flib%2FDancer2%2FSerializer%2FXML.pm;0;4
-FILE_NAME_2=1084;Perl;0;EUTF-8;1;1;0;%2Fhome%2Figibbs%2FDropbox%2FWork%2FAttono%2Fdev%2Fperl-dancer2-serializer-xml%2FDancer2-Serializer-XML%2Ft%2Fsettings.t;0;4
-FILE_NAME_3=194;YAML;0;EUTF-8;1;1;0;%2Fhome%2Figibbs%2FDropbox%2FWork%2FAttono%2Fdev%2Fperl-dancer2-serializer-xml%2FDancer2-Serializer-XML%2Fconfig.yml;0;4
-FILE_NAME_4=2742;Perl;0;EUTF-8;1;1;0;%2Fusr%2Flocal%2Fshare%2Fperl%2F5.22.1%2FDancer2.pm;0;4
+current_page=1
+FILE_NAME_0=62;None;0;EUTF-8;1;1;0;%2Fhome%2Figibbs%2FDropbox%2FWork%2FAttono%2Fdev%2Fperl-dancer2-serializer-xml%2FDancer2-Serializer-XML%2FMANIFEST;0;4
+FILE_NAME_1=1373;Perl;0;EUTF-8;1;1;0;%2Fhome%2Figibbs%2FDropbox%2FWork%2FAttono%2Fdev%2Fperl-dancer2-serializer-xml%2FDancer2-Serializer-XML%2Flib%2FDancer2%2FSerializer%2FXML.pm;0;4
+FILE_NAME_2=51;Perl;0;EUTF-8;1;1;0;%2Fhome%2Figibbs%2FDropbox%2FWork%2FAttono%2Fdev%2Fperl-dancer2-serializer-xml%2FDancer2-Serializer-XML%2Ft%2FDancer2-Serializer-XML.t;0;4
+FILE_NAME_3=0;Perl;0;EUTF-8;1;1;0;%2Fusr%2Flocal%2Fshare%2Fperl%2F5.22.1%2FDancer2%2FCore%2FRole%2FSerializer.pm;0;4
+FILE_NAME_4=0;Perl;0;EUTF-8;1;1;0;%2Fusr%2Flocal%2Fshare%2Fperl%2F5.22.1%2FDancer2%2FCore%2FRole%2FEngine.pm;0;4
+FILE_NAME_5=260;YAML;0;EUTF-8;1;1;0;%2Fhome%2Figibbs%2FDropbox%2FWork%2FAttono%2Fdev%2Fperl-dancer2-serializer-xml%2FDancer2-Serializer-XML%2Fconfig.yml;0;4
+FILE_NAME_6=315;Perl;0;EUTF-8;1;1;0;%2Fusr%2Flocal%2Fshare%2Fperl%2F5.22.1%2FDancer2%2FTemplate%2FTemplateToolkit.pm;0;4
 
 [VTE]
 last_dir=/home/igibbs

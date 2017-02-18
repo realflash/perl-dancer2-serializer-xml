@@ -9,10 +9,38 @@ use Dancer2;	# So that setting is available in tests
 use Data::Dumper;
 use Class::Load 'load_class';
 with 'Dancer2::Core::Role::Serializer';
+#~ use Dancer2::Core::Types;
+#use Test::More;
 
 our $VERSION = '0.01';
 
 has '+content_type' => ( default => sub {'application/xml'} );
+#~ has RootName => (
+    #~ is       => 'ro',
+    #~ isa      => Str,
+    #~ required => 0,
+#~ );
+
+#~ has '+engine' => ( isa => InstanceOf ['Serializer'], );
+#~ sub _build_engine {
+    #~ my $self      = shift;
+    #~ my $charset   = $self->charset;
+    #~ my %tt_config = (
+        #~ ANYCASE  => 1,
+        #~ ABSOLUTE => 1,
+        #~ length($charset) ? ( ENCODING => $charset ) : (),
+        #~ %{ $self->config },
+    #~ );
+
+    #~ my $tt = Serializer->new(%tt_config);
+    #~ $Template::Stash::PRIVATE = undef if $self->config->{show_private_variables};
+    #~ return $tt;
+#~ }
+has 'xml_options' => 
+( 
+	default => sub { {RootName => 'data', KeyAttr => [], AttrIndent => 1} },
+	is => 'rw'
+);
 
 sub BUILD
 {
@@ -25,32 +53,34 @@ sub serialize
 {
 	my $self    = shift;
 	my $entity  = shift;
-	my %options = (RootName => 'data');
 
-	my $s = setting('engines') || {};
-	if(exists($s->{serializer}) && exists($s->{serializer}{serialize}))
-	{
-		%options = (%options, %{$s->{serializer}{serialize}});
-	}
-
+	#my $s = setting('engines') || {};
+	#if(exists($s->{serializer}) && exists($s->{serializer}{serialize}))
+	#{
+	#	$options = (%options, %{$s->{serializer}{serialize}});
+	#}
+	my %options = ();
+	%options = %{$self->xml_options->{'serialize'}} if(exists($self->xml_options->{'serialize'}));
 	my $xml = XML::Simple::XMLout($entity, %options);
 	utf8::encode($xml);
+
 	return $xml;
-}
+}	
 
 sub deserialize
 {
 	my $self = shift;
 	my $xml = shift;
-	my %options = ();
 	
 	utf8::decode($xml);
 
-	my $s = setting('engines') || {};
-	if(exists($s->{serializer}) && exists($s->{serializer}{deserialize}))
-	{
-		%options = (%options, %{$s->{serializer}{deserialize}});
-	}
+	#~ my $s = setting('engines') || {};
+	#~ if(exists($s->{serializer}) && exists($s->{serializer}{deserialize}))
+	#~ {
+		#~ %options = (%options, %{$s->{serializer}{deserialize}});
+	#~ }
+	my %options = ();
+	%options = %{$self->xml_options->{'deserialize'}} if(exists($self->xml_options->{'deserialize'}));
 
 	return XML::Simple::XMLin($xml, %options);
 }
@@ -110,7 +140,7 @@ For new code, these are the recommended settings for consistent
 behaviour:
 
    engines:
-      XMLSerializer:
+      serializer:
         serialize:
            AttrIndent: 1
            KeyAttr: 1
