@@ -1,6 +1,5 @@
 Revision history for Perl extension Dancer2::Serializer::XML.
 
-0.01  Thu Feb 16 20:00:15 2017
-	- original version; created by h2xs 1.23 with options
-		-cfn Dancer2::Serializer::XML
+0.01  Thu Feb 18 10:20:15 2017
+	- First version
 

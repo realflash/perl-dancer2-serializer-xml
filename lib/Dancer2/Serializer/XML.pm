@@ -109,6 +109,9 @@ This module is a plugin for the Web application frmaework Dancer2, and
 allows it to serialise Perl objects into XML, and deserialise XML into 
 Perl objects. It uses L<XML::Simple> under the covers.
 
+=head2 STATUS
+Alpha, but it works for me. Reports of success are gratefully received.
+
 =head2 METHODS
 
 =head3 serialize
