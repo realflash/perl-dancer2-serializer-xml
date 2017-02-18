@@ -9,33 +9,10 @@ use Dancer2;	# So that setting is available in tests
 use Data::Dumper;
 use Class::Load 'load_class';
 with 'Dancer2::Core::Role::Serializer';
-#~ use Dancer2::Core::Types;
-#use Test::More;
 
 our $VERSION = '0.01';
 
 has '+content_type' => ( default => sub {'application/xml'} );
-#~ has RootName => (
-    #~ is       => 'ro',
-    #~ isa      => Str,
-    #~ required => 0,
-#~ );
-
-#~ has '+engine' => ( isa => InstanceOf ['Serializer'], );
-#~ sub _build_engine {
-    #~ my $self      = shift;
-    #~ my $charset   = $self->charset;
-    #~ my %tt_config = (
-        #~ ANYCASE  => 1,
-        #~ ABSOLUTE => 1,
-        #~ length($charset) ? ( ENCODING => $charset ) : (),
-        #~ %{ $self->config },
-    #~ );
-
-    #~ my $tt = Serializer->new(%tt_config);
-    #~ $Template::Stash::PRIVATE = undef if $self->config->{show_private_variables};
-    #~ return $tt;
-#~ }
 has 'xml_options' => 
 ( 
 	default => sub { {RootName => 'data', KeyAttr => [], AttrIndent => 1} },
@@ -113,53 +90,138 @@ version 0.01
 
 =head1 SYNOPSIS
 
+   set serializer => 'XML';
+
+   # Send an XML string to the caller
+   get '/xml/get_example' => sub {
+      return { foo => 'one', bar => 'two' }
+   }
+   
+   # Parse an XML string sent by the caller
+   put '/xml/from_body' => sub {
+      debug request->data();	# Contains the deserialised Perl object
+      return template 'ok';
+   };
+
 =head1 DESCRIPTION
+
+This module is a plugin for the Web application frmaework Dancer2, and 
+allows it to serialise Perl objects into XML, and deserialise XML into 
+Perl objects. It uses L<XML::Simple> under the covers.
 
 =head2 METHODS
 
-=head2 serialize
+=head3 serialize
 
-Serialize a data structure to an XML structure.
+Serialize a data structure to an XML structure. Called automatically by 
+Dancer2.
 
-=head2 deserialize
+=head3 deserialize
 
-Deserialize an XML structure to a data structure
+Deserialize an XML structure to a data structure. Called automatically
+ by Dancer2.
 
-=head2 content_type
+=head3 content_type
 
-Return 'text/xml'
+Returns the string 'application/xml'
 
-=head2 CONFIG FILE
+=head2 CONFIGURATION
 
-You can set XML::Simple options for serialize and deserialize in the
-config file. The default behaviour is for no options to be passed to
-XML:: Simple, thus retaining XML::Simple default behaviour and backwards
-compatibility with Dancer::Serializer::XML. 
+The default behaviour of this module is the default behaviour of 
+L<XML::Simple> - nothing is overridden, which creates backwards 
+compatability with L<Dancer::Serializer::XML>. Every option that 
+L<XML::Simple> supports is also supported by this module. 
+
+You can control options for serialization and deserialization 
+separately. See the examples below.
+
+=head3 Configuration in code
+
+To configure the serializer in a route, do this:
+
+   get '/xml/example' => sub {
+      my $self = shift;
+      $self->{'serializer_engine'}->{'xml_options'}->{'serialize'}->
+                                                  {'RootName'} = 'data';
+      return { foo => 'one', bar => 'two' }
+   }
+	
+Which will produce this:
+
+   <data bar="two" foo="one" />
+   
+You can pass a reference to a hash to configure multiple things:
+
+   $self->{'serializer_engine'}->{'xml_options'}->{'serialize'} = 
+                                  { RootName => 'data', KeyAttr => [] };
+   
+To configure the deserializer, do similarly:
+
+   put '/from_body' => sub {
+      my $self = shift;
+      $self->{'serializer_engine'}->{'xml_options'}->{'deserialize'}->
+                                                       {'KeepRoot'} = 1;
+      return template 'ok';
+   };
+
+etc. See below for the recommended configuration.
+
+=head3 Configuration in config file
+
+At this time there seems I cannot find a way for a Dancer2 serializer to
+ directly access the configuration of a Dancer2 app. If you know it, 
+ please tell me. Until then, do this in your code:
+ 
+   get '/xml/example' => sub {
+      my $self = shift;
+      $self->{'serializer_engine'}->{'xml_options'} = 
+                         $self->{'config'}->{'engines'}->{'serializer'};
+      return { foo => 'one', bar => 'two' }
+   }
+
+and put this in your config file:
+
+   engines:
+      serializer:
+        serialize:
+           RootName: 'data'
+           KeyAttr: []
+        deserialize:
+           KeepRoot: 1
+
+BUT see L</"Recommended configuration">.
+	
+=head3 Recommended configuration
 
 For new code, these are the recommended settings for consistent 
-behaviour:
+behaviour. In code:
+
+   my $xml_options = { 'serialize' => { RootName => 'test',
+   									KeyAttr => []
+   									},
+   					'deserialize' => { ForceContent => 1,
+   									KeyAttr => [],
+   									ForceArray => 1,
+   									KeepRoot => 1
+   									}
+   					};
+
+In config:
 
    engines:
       serializer:
         serialize:
            AttrIndent: 1
-           KeyAttr: 1
+           KeyAttr: []
         deserialize:
            ForceArray: 1
-           KeyAttr: 1
+           KeyAttr: []
            ForceContent: 1
            KeepRoot: 1
 
-=head1 SEE ALSO
+=head1 SEE ALSO / EXAMPLES
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+L<XML::Simple>
 
 =head1 AUTHOR
 
