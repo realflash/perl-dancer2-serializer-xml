@@ -6,6 +6,7 @@ use warnings;
 use Moo;
 use Dancer2;	# So that setting is available in tests
 use Class::Load 'load_class';
+use Data::Dumper;
 with 'Dancer2::Core::Role::Serializer';
 
 our $VERSION = '0.04';
@@ -29,6 +30,8 @@ sub serialize
 	my $self    = shift;
 	my $entity  = shift;
 
+	print "Hello";
+	print Dumper $entity;
 	#my $s = setting('engines') || {};
 	#if(exists($s->{serializer}) && exists($s->{serializer}{serialize}))
 	#{
@@ -36,10 +39,13 @@ sub serialize
 	#}
 	my %options = ();
 	%options = %{$self->xml_options->{'serialize'}} if(exists($self->xml_options->{'serialize'}));
-	my $xml = XML::Simple::XMLout($entity, %options);
-	utf8::encode($xml);
-
-	return $xml;
+	if($entity)
+	{
+		my $xml = XML::Simple::XMLout($entity, %options);
+		utf8::encode($xml);
+		return $xml;
+	}
+	return;
 }	
 
 sub deserialize
