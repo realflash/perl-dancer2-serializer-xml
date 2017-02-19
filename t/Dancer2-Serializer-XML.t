@@ -73,14 +73,13 @@ my $test_xml_options = { 'serialize' => { RootName => 'test',
 {
     package NonDefaultApp;
     use Dancer2;
-    use Test::More;
 
     set serializer => 'XML';
     set logger     => 'Console';
 
     put '/from_body' => sub {
-		my $self = shift;
-		$self->{'serializer_engine'}->{'xml_options'} = $test_xml_options;
+	my $self = shift;
+	$self->{'serializer_engine'}->{'xml_options'} = $test_xml_options;
         return request->data();	# Right back at you
     };
 }

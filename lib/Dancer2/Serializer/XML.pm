@@ -1,16 +1,14 @@
 package Dancer2::Serializer::XML;
-#ABSTRACT: serializer for handling XML data
+#ABSTRACT: serializer for handling XML dat in Dancer2
 our $AUTHORITY = 'cpan:IGIBBS';
 use strict;
 use warnings;
-use Carp;
 use Moo;
 use Dancer2;	# So that setting is available in tests
-use Data::Dumper;
 use Class::Load 'load_class';
 with 'Dancer2::Core::Role::Serializer';
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 has '+content_type' => ( default => sub {'application/xml'} );
 has 'xml_options' => 
@@ -62,14 +60,15 @@ sub deserialize
 	return XML::Simple::XMLin($xml, %options);
 }
 
-sub loaded_xmlsimple {
+sub loaded_xmlsimple
+{
 	load_class('XML::Simple');
 }
 
-sub loaded_xmlbackends {
-    # we need either XML::Parser or XML::SAX too
-    load_class('XML::Parser') or
-    load_class('XML::SAX');
+sub loaded_xmlbackends
+{	# We need either XML::Parser or XML::SAX too
+	load_class('XML::Parser') or
+	load_class('XML::SAX');
 }
 
 1;
@@ -226,6 +225,10 @@ In config:
 =head1 SEE ALSO / EXAMPLES
 
 L<XML::Simple>
+
+=head1 SOURCE / BUGS / CONTRIBUTIONS
+
+L<GitHub|https://github.com/realflash/perl-dancer2-serializer-xml>
 
 =head1 AUTHOR
 
