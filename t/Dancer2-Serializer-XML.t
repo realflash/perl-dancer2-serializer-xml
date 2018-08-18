@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More tests => 5;
+use Test::More tests => 6;
 use Plack::Test;
 use HTTP::Request::Common;
 use utf8;
@@ -107,3 +107,36 @@ is(
     'application/xml',
     'content-type is set correctly',
 );
+
+# Test 6: send_as function works, complete with options
+{
+    package SendAsApp;
+    use Dancer2;
+
+    set serializer => 'JSON';
+    set logger     => 'Console';
+
+    put '/from_body' => sub {
+		my $self = shift;
+		$self->{'config'}->{'engines'}->{'serializer'} = $test_xml_options;
+        return request->data();	# Right back at you
+    };
+}
+$app = SendAsApp->to_app;
+note "Settings take effect when called from send_as"; {
+    test_psgi $app, sub
+    {
+        my $cb = shift;
+        $serializer->xml_options($test_xml_options);
+		my $body = $serializer->serialize({foo => 'one', bar => 'two'});
+		my $r = $cb->(
+			PUT '/from_body',
+				'Content-Type' => $serializer->content_type,
+				Content        => $body,
+		);
+		#diag("Body: ". $body);
+		is($r->content, '<test bar="two" foo="one" />
+', "serializers take note of settings");
+    };
+}
+
