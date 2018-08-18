@@ -119,7 +119,7 @@ is(
     put '/from_body' => sub {
 		my $self = shift;
 		$self->{'config'}->{'engines'}->{'serializer'} = $test_xml_options;
-        return request->data();	# Right back at you
+        send_as XML => request->data();	# Right back at you
     };
 }
 $app = SendAsApp->to_app;
