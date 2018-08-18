@@ -19,3 +19,4 @@ nytprof.out
 *.bs
 /_eumm/
 *.tar.gz
+/Dancer2-Serializer-XML.geany
