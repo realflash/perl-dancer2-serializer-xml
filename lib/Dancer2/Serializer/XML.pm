@@ -22,6 +22,7 @@ sub BUILD
     my ($self) = @_;
     die 'XML::Simple is needed and is not installed' unless $self->loaded_xmlsimple;
     die 'XML::Simple needs XML::Parser or XML::SAX and neither is installed' unless $self->loaded_xmlbackends;
+	$self->xml_options($self->{'config'}) if(exists($self->{'config'}->{'serialize'}));
 }
 
 sub serialize
