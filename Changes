@@ -2,6 +2,7 @@ Revision history for Perl extension Dancer2::Serializer::XML.
 
 0.05  2018-08-08
 	- Allow configuration to be passed while invoking the module. Allow the use of "send_as XML" core method.
+  - Specify build_requires to eliminate CPAN test failures
 
 0.04  2017-02-19
 	- Switch Changes file to ISO date format

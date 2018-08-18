@@ -1,5 +1,5 @@
 package Dancer2::Serializer::XML;
-#ABSTRACT: serializer for handling XML dat in Dancer2
+#ABSTRACT: serializer for handling XML data in Dancer2
 our $AUTHORITY = 'cpan:IGIBBS';
 use strict;
 use warnings;
