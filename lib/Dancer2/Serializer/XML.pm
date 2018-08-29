@@ -4,7 +4,8 @@ our $AUTHORITY = 'cpan:IGIBBS';
 use strict;
 use warnings;
 use Moo;
-use Dancer2;	# So that setting is available in tests
+use Dancer2 0.205000;	# So that setting is available in tests
+						# We need a minimum version of 0.205000 due to https://github.com/PerlDancer/Dancer2/issues/1302
 use Class::Load 'load_class';
 with 'Dancer2::Core::Role::Serializer';
 
@@ -22,7 +23,8 @@ sub BUILD
     my ($self) = @_;
     die 'XML::Simple is needed and is not installed' unless $self->loaded_xmlsimple;
     die 'XML::Simple needs XML::Parser or XML::SAX and neither is installed' unless $self->loaded_xmlbackends;
-	$self->xml_options($self->{'config'}) if(exists($self->{'config'}->{'serialize'}));
+    debug $self;
+	$self->xml_options($self->{'config'}) if(exists($self->{'config'}));
 }
 
 sub serialize
