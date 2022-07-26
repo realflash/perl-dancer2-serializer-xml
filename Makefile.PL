@@ -7,7 +7,7 @@ WriteMakefile(
     'PREREQ_PM'    => {
 		"Class::Load" => "0.25",
 		"Moo" => "1"
-    }
+    },
     ABSTRACT_FROM     => 'lib/Dancer2/Serializer/XML.pm', # retrieve abstract from module
     AUTHOR            => 'Ian Gibbs <igibbs@cpan.org>',
     LICENSE           => 'gpl',
