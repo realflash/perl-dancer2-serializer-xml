@@ -8,7 +8,7 @@ use Dancer2;	# So that setting is available in tests
 use Class::Load 'load_class';
 with 'Dancer2::Core::Role::Serializer';
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 has '+content_type' => ( default => sub {'application/xml'} );
 has 'xml_options' => 
